@@ -22,11 +22,6 @@ type AdminRepository struct {
 	db *gorm.DB
 }
 
-// RejectRequest implements AdminRepositoryInterface.
-func (r *AdminRepository) RejectRequest(id int, verifier_id int) string {
-	panic("unimplemented")
-}
-
 func NewAdminRepository(db *gorm.DB) *AdminRepository {
 	return &AdminRepository{db: db}
 }
@@ -72,6 +67,11 @@ func (r *AdminRepository) GetRequestByID(id int) (*domain.Request, string) {
 	return &request, ""
 }
 
+// ApproveRequest change status of request to 1 (approved)
+// change verifier_id to admin id
+// if requestType is registration, change user role to 1 (applicant)
+// else if requestType is verification, change user role to 2 (volunteer) and change verification status to 1 (active)
+// and insert this user to volunteer_details table
 func (r *AdminRepository) ApproveRequest(id int, verifier_id int) string {
 	// get request type
 	request := r.getRequestByRequestID(id)
@@ -103,10 +103,19 @@ func (r *AdminRepository) ApproveRequest(id int, verifier_id int) string {
 		if done {
 			return s
 		}
-
+		if result.Error != nil {
+			return result.Error.Error()
+		}
 		return "Approve request success"
 	}
 	return "Invalid request type"
+}
+func (r *AdminRepository) RejectRequest(id int, verifier_id int) string {
+	result := r.db.Model(&domain.Request{}).Where("id = ?", id).Update("status", 2).Update("verifier_id", verifier_id)
+	if result.Error != nil {
+		return result.Error.Error()
+	}
+	return "Reject request success"
 }
 func (r *AdminRepository) AddRejectNotes(id int, notes string) string {
 	result := r.db.Model(&domain.Request{}).Where("id = ?", id).Update("reject_notes", notes)

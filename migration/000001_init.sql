@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS users (
     CONSTRAINT fk_users_resident_countries FOREIGN KEY (resident_country_id) REFERENCES countries (id)
 );
 
-COMMENT ON COLUMN users.verification_status IS '0: unverified\n1: verified';
-COMMENT ON COLUMN users.status IS '0: inactive\n1: active';
+COMMENT ON COLUMN users.verification_status IS '0: unverified\n 1: verified';
+COMMENT ON COLUMN users.status IS '0: inactive\n 1: active';
 
 CREATE TABLE IF NOT EXISTS requests (
     id SERIAL PRIMARY KEY,

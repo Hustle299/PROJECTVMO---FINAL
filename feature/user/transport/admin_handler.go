@@ -1,7 +1,6 @@
 package transport
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 
@@ -18,11 +17,15 @@ func NewAuthenticationHandler(usecase usecase.AdminUsecaseInterface) *AdminHandl
 	return &AdminHandler{usecase: usecase}
 }
 
+// GetListPendingRequest godoc
+// @Summary Get list pending request
+// @Description Get list pending request
+// @Produce json
+// @Tags admin
+// @Security bearerToken
+// @Success 200 {object} dto.ListRequest{}
+// @Router /api/v1/admin/list-pending-request [get]
 func (h *AdminHandler) GetListPendingRequest(c *gin.Context) {
-	if err := h.checkAdminRole(c); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	resp, msg := h.usecase.GetListPendingRequest()
 	if msg != "" {
 		c.JSON(http.StatusNotFound, gin.H{"error": msg})
@@ -31,11 +34,16 @@ func (h *AdminHandler) GetListPendingRequest(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// GetPendingRequestById godoc
+// @Summary Get pending request by ID
+// @Description Get pending request by ID
+// @Produce json
+// @Tags admin
+// @Param id path int true "Request ID"
+// @Success 200 {object} dto.RequestResponse{}
+// @Security bearerToken
+// @Router /api/v1/admin/pending-request/{id} [get]
 func (h *AdminHandler) GetPendingRequestById(c *gin.Context) {
-	if err := h.checkAdminRole(c); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request ID"})
@@ -49,11 +57,15 @@ func (h *AdminHandler) GetPendingRequestById(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// GetListRequest godoc
+// @Summary Get list request
+// @Description Get list request
+// @Produce json
+// @Tags admin
+// @Security bearerToken
+// @Success 200 {object} dto.ListRequest{}
+// @Router /api/v1/admin/list-request [get]
 func (h *AdminHandler) GetListRequest(c *gin.Context) {
-	if err := h.checkAdminRole(c); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	resp, msg := h.usecase.GetListRequest()
 	if msg != "" {
 		c.JSON(http.StatusNotFound, gin.H{"error": msg})
@@ -62,11 +74,16 @@ func (h *AdminHandler) GetListRequest(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// GetRequestById godoc
+// @Summary Get request by ID
+// @Description Get request by ID
+// @Produce json
+// @Tags admin
+// @Param id path int true "Request ID"
+// @Success 200 {object} dto.RequestResponse{}
+// @Security bearerToken
+// @Router /api/v1/admin/request/{id} [get]
 func (h *AdminHandler) GetRequestById(c *gin.Context) {
-	if err := h.checkAdminRole(c); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request ID"})
@@ -80,11 +97,16 @@ func (h *AdminHandler) GetRequestById(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// ApproveRequest godoc
+// @Summary Approve request
+// @Description Approve request
+// @Produce json
+// @Tags admin
+// @Param id path int true "Request ID"
+// @Success 200 string message
+// @Security bearerToken
+// @Router /api/v1/admin/approve-request/{id} [post]
 func (h *AdminHandler) ApproveRequest(c *gin.Context) {
-	if err := h.checkAdminRole(c); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request ID"})
@@ -99,11 +121,16 @@ func (h *AdminHandler) ApproveRequest(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": msg})
 }
 
+// RejectRequest godoc
+// @Summary Reject request
+// @Description Reject request
+// @Produce json
+// @Tags admin
+// @Param id path int true "Request ID"
+// @Success 200 string message
+// @Security bearerToken
+// @Router /api/v1/admin/reject-request/{id} [post]
 func (h *AdminHandler) RejectRequest(c *gin.Context) {
-	if err := h.checkAdminRole(c); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request ID"})
@@ -118,11 +145,17 @@ func (h *AdminHandler) RejectRequest(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": msg})
 }
 
+// AddRejectNotes godoc
+// @Summary Add reject notes
+// @Description Add reject notes
+// @Produce json
+// @Tags admin
+// @Param id path int true "Request ID"
+// @Param notes body dto.AddRejectNoteRequest true "Add Reject Note Request"
+// @Success 200 string message
+// @Security bearerToken
+// @Router /api/v1/admin/add-reject-notes/{id} [post]
 func (h *AdminHandler) AddRejectNotes(c *gin.Context) {
-	if err := h.checkAdminRole(c); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request ID"})
@@ -137,11 +170,16 @@ func (h *AdminHandler) AddRejectNotes(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": msg})
 }
 
+// DeleteRequest godoc
+// @Summary Delete request
+// @Description Delete request
+// @Produce json
+// @Tags admin
+// @Param id path int true "Request ID"
+// @Success 200 string message
+// @Security bearerToken
+// @Router /api/v1/admin/delete-request/{id} [delete]
 func (h *AdminHandler) DeleteRequest(c *gin.Context) {
-	if err := h.checkAdminRole(c); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request ID"})
@@ -149,12 +187,4 @@ func (h *AdminHandler) DeleteRequest(c *gin.Context) {
 	}
 	msg := h.usecase.DeleteRequest(id)
 	c.JSON(http.StatusOK, gin.H{"message": msg})
-}
-
-func (h *AdminHandler) checkAdminRole(c *gin.Context) error {
-	roleId, exists := c.Get("roleId")
-	if !exists || roleId.(int) != 3 {
-		return errors.New("forbidden: only admins can perform this action")
-	}
-	return nil
 }

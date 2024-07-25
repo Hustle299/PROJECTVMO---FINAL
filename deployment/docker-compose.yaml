@@ -1,53 +1,28 @@
-version: '26.1.4'
+version: '3.6'
 services:
   app:
-    container_name: full_app
-    build: .
+    container_name: go-app:latest
     ports: 
       - 8080:8080 
     restart: on-failure
-    volumes:
-      - api:/usr/src/app/
     depends_on:
-      - fullstack-postgres
-    networks:
-      - fullstack
+      - db
+    env_file:
+      - .env
 
-
-  fullstack-postgres:
+  db:
      image: postgres:16.3
-     container_name: full_db_postgres
+     container_name: postgres
      environment:
-       - POSTGRES_USER=${DB.USER}  
-       - POSTGRES_PASSWORD=${DB.PASSWORD}
-       - POSTGRES_DB=${DB.NAME}
-       - DATABASE_HOST=${DB.HOST} 
+       - POSTGRES_USER=${DB_USER}
+       - POSTGRES_PASSWORD=${DB_PASSWORD}
+       - POSTGRES_DB=${DB_NAME}
      ports:
        - '5432:5432'
      volumes:
        - database_postgres:/var/lib/postgresql/data
-     networks:
-       - fullstack
-    
-  pgadmin:
-     image: dpage/pgadmin4
-     container_name: pgadmin_container
-     environment:
-       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-     depends_on:
-       - fullstack-postgres
-     ports:
-       - "5050:80"
-     networks:
-       - fullstack
-     restart: unless-stopped
 
 volumes:
-  api:
-  database_postgres:                  
+  database_postgres:
 
-# Networks to be created to facilitate communication between containers
-networks:
-  fullstack:
-    driver: bridge
+# docker build -t go-app:latest .
