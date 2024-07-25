@@ -68,17 +68,18 @@ func (u *ApplicantUsecase) FindApplicantByID(id int) (*dto.ApplicantResponseDTO,
 	}
 
 	response := &dto.ApplicantResponseDTO{
-		ID:                user.ID,
-		Email:             user.Email,
-		Name:              user.Name,
-		Surname:           user.Surname,
-		Gender:            user.Gender,
-		DOB:               user.DOB.String(),
-		Mobile:            user.Mobile,
-		RoleID:            user.RoleID,
-		CountryID:         user.CountryID,
-		ResidentCountryID: user.ResidentCountryID,
-		DepartmentID:      user.DepartmentID,
+		ID:                 user.ID,
+		Email:              user.Email,
+		Name:               user.Name,
+		Surname:            user.Surname,
+		Gender:             user.Gender,
+		DOB:                user.DOB.String(),
+		Mobile:             user.Mobile,
+		RoleID:             user.RoleID,
+		VerificationStatus: user.VerificationStatus,
+		CountryID:          user.CountryID,
+		ResidentCountryID:  user.ResidentCountryID,
+		DepartmentID:       user.DepartmentID,
 	}
 	return response, nil
 }

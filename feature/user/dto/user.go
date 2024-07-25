@@ -19,15 +19,16 @@ type ApplicantUpdateDTO struct {
 }
 
 type ApplicantResponseDTO struct {
-	ID                int    `json:"id"`
-	Email             string `json:"email"`
-	Name              string `json:"name"`
-	Surname           string `json:"surname"`
-	Gender            string `json:"gender"`
-	DOB               string `json:"dob"`
-	Mobile            string `json:"mobile"`
-	RoleID            int    `json:"role_id"`
-	CountryID         int    `json:"country_id"`
-	ResidentCountryID int    `json:"resident_country_id"`
-	DepartmentID      int    `json:"department_id"`
+	ID                 int    `json:"id"`
+	Email              string `json:"email"`
+	Name               string `json:"name"`
+	Surname            string `json:"surname"`
+	Gender             string `json:"gender"`
+	DOB                string `json:"dob"`
+	Mobile             string `json:"mobile"`
+	RoleID             int    `json:"role_id"`
+	CountryID          int    `json:"country_id"`
+	ResidentCountryID  int    `json:"resident_country_id"`
+	DepartmentID       int    `json:"department_id"`
+	VerificationStatus int    `json:"verification_status"`
 }
